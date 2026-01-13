@@ -1,0 +1,14 @@
+{
+    //name: feed name
+    //url: feed url
+    //filter_regex: optional, filter regex, if not empty, will filter projects by regex
+    //main_url: optional,main url. for localhost replacement and base url
+    "feeds": [
+        {
+            "name": "xxxx",
+            "url": "http://user:password@TeamCityUrl:8111/httpAuth/app/rest/cctray/projects.xml",
+            "filter_regex": "",
+            "main_url": "http://TeamCityUrl:8111"
+        }
+    ]
+}

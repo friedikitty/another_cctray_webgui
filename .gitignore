@@ -1,0 +1,28 @@
+# User-specific configuration (may contain credentials)
+config_user.json
+config_user.json-*
+config_user.json5
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+/.cursor
+/NGINX_ERROR_REPORT.md
+/PRE_COMMIT_REPORT.md
+/config_user.json5-mine
