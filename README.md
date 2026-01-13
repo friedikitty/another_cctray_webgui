@@ -8,10 +8,20 @@
 - The main ideas behind this project are:
     - Prevent password leaks in URLs. TeamCity's CCTray feed requires authentication credentials in the URL, which can be exposed in browser history or logs. This application handles credentials server-side to prevent such leaks.
     - Provide a better-looking UI
+    
 - Host it on a server so team members don't need to configure anything, preventing configuration errors and password leaks;
+
 - Or you can use it locally as a cctray viewer
 
 - **Simply put:** A Flask-based web application that continuously monitors and displays build status from a CCTray XML feed.
+
+- Looks this:
+
+    - jump to a feed on the top
+    - expand/unexpand using the arraw button on the right
+    - click `[link]` to jump to the url
+
+    ![image-20260113160433350](README.assets/image-20260113160433350.png)
 
 ## Quick Start
 * `py -3 -m pip install -r requirements.txt` or `pip install -r requirements.txt`
