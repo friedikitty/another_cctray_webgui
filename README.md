@@ -87,14 +87,9 @@ Read the comments at the top of the file. Feeds are configured like this:
 ### Run the application:
 ```bash
 # Development mode (with auto-reload enabled by default)
-python app.py
-
-# Or explicitly enable debug mode
-python app.py --debug
-
-# Production mode (disable auto-reload)
-python app.py --no-debug
+python wsgi.py
 ```
+you may also run the app.py, but's a temporary launch just for debug
 
 ### Open your browser and navigate to:
 ```
