@@ -530,7 +530,8 @@
                 'Success': 'status-success',
                 'Failure': 'status-failure',
                 'Exception': 'status-exception',
-                'Unknown': 'status-unknown'
+                'Unknown': 'status-unknown',
+                'Building': 'status-building'
             };
             return statusMap[status] || 'status-unknown';
         }
@@ -540,7 +541,8 @@
                 'Success': config.colors.success,
                 'Failure': config.colors.failure,
                 'Exception': config.colors.exception,
-                'Unknown': config.colors.unknown
+                'Unknown': config.colors.unknown,
+                'Building': config.colors.building
             };
             return colorMap[status] || config.colors.unknown;
         }
@@ -606,6 +608,20 @@
                 statusKeys.forEach(colorKey => {
                     const statusName = config.statusMapping[colorKey];
                     statusCounts[colorKey] = feedProjects.filter(p => {
+                        // Check if project is currently building (activity OR lastBuildStatus)
+                        const isBuilding = p.activity === 'Building' || 
+                                         p.activity === 'CheckingModifications' || 
+                                         p.lastBuildStatus === 'Building';
+                        
+                        // If checking for Building status, use activity or lastBuildStatus
+                        if (statusName === 'Building') {
+                            return isBuilding;
+                        }
+                        
+                        // For other statuses, use lastBuildStatus (but exclude if building)
+                        if (isBuilding) {
+                            return false; // Don't count building projects as other statuses
+                        }
                         const projectStatus = p.lastBuildStatus || 'Unknown';
                         return projectStatus === statusName || (statusName === 'Unknown' && (!p.lastBuildStatus || projectStatus === 'Unknown'));
                     }).length;
@@ -635,10 +651,15 @@
                 const projectsHtml = feedProjects.map(project => {
                     const statusClass = getStatusClass(project.lastBuildStatus);
                     const activityClass = getActivityClass(project.activity);
-                    const isBuilding = project.activity === 'Building' || project.activity === 'CheckingModifications';
+                    // Check if project is building based on activity OR lastBuildStatus
+                    const isBuilding = project.activity === 'Building' || 
+                                     project.activity === 'CheckingModifications' || 
+                                     project.lastBuildStatus === 'Building';
                     const statusBadgeClass = isBuilding ? 'status-building' : statusClass;
                     const borderColor = isBuilding ? config.colors.building : getStatusColor(project.lastBuildStatus);
                     const badgeColor = isBuilding ? config.colors.building : getStatusColor(project.lastBuildStatus);
+                    // Display "Building" status when project is building, otherwise show lastBuildStatus
+                    const displayStatus = isBuilding ? 'Building' : project.lastBuildStatus;
 
                     // Don't escape URL in href attribute
                     const linkHtml = project.webUrl ? `<a href="${project.webUrl}" target="_blank" class="project-link">[link]</a>` : '';
@@ -657,7 +678,7 @@
                                     <div class="project-name">${escapeHtml(project.name)}</div>
                                     ${linkHtml}
                                 </div>
-                                <div class="status-badge ${statusBadgeClass}" style="background-color: ${badgeColor}">${escapeHtml(project.lastBuildStatus)}</div>
+                                <div class="status-badge ${statusBadgeClass}" style="background-color: ${badgeColor}">${escapeHtml(displayStatus)}</div>
                             </div>
                             <div class="project-details">
                                 <div class="detail-item">
