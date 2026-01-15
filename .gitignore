@@ -2,6 +2,7 @@
 config_user.json
 config_user.json-*
 config_user.json5
+config_user.debug.json5
 
 # Python
 __pycache__/

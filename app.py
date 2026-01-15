@@ -29,10 +29,17 @@ def load_config():
 
 # Load user configuration (feeds)
 def load_user_config():
+    import json5
+    
+    # Check for debug config first (higher priority, for local testing)
+    debug_config_path = "config_user.debug.json5"
+    if os.path.exists(debug_config_path):
+        with open(debug_config_path, "r", encoding="utf-8") as f:
+            return json5.load(f)
+    
+    # Fall back to regular user config
     config_path = "config_user.json5"
     if os.path.exists(config_path):
-        import json5
-
         with open(config_path, "r", encoding="utf-8") as f:
             return json5.load(f)
     return {}
